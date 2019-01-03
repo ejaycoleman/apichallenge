@@ -18,10 +18,18 @@ type Dwarve struct {
 	Name string `json:"name"`
 }
 
-// func main() {
-	
 
-// }
+type ResponseTwo struct {
+	Dwarves []DwarveFull `json:"dwarves"`
+}
+
+type DwarveFull struct {
+	Name string `json:"name"`
+	Birth string `json:"birth"`
+	Death string `json:"death"`
+	Culture string `json:"culture"`
+}
+
 
 
 func main() {
@@ -47,18 +55,46 @@ func main() {
 
 	// fmt.Println(string(dwarves.Name))
 
-	for i := 0; i < len(responseObject.Dwarves); i++ {
-		fmt.Println(responseObject.Dwarves[i].Name)
-	}
+	// for i := 0; i < len(responseObject.Dwarves); i++ {
+	// 	fmt.Println(responseObject.Dwarves[i].Name)
+	// }
 
-		b, err := json.Marshal(responseObject)
-    if err != nil {
-        fmt.Println(err)
-        return
-    }
+		
 
     http.HandleFunc("/api/dwarves", func(w http.ResponseWriter, r *http.Request) {
+    	b, err := json.Marshal(responseObject)
+		  if err != nil {
+		      fmt.Println(err)
+		      return
+		  }
         fmt.Fprintf(w, "%s", b)
+    })
+
+
+
+    var responseObjectFull ResponseTwo
+		// json.Unmarshal([]byte(responseData), &dwarves)
+		json.Unmarshal(responseData, &responseObjectFull)
+
+		http.HandleFunc("/api/dwarves/", func(w http.ResponseWriter, r *http.Request) {
+        // fmt.Fprintf(w, "%s", b)
+
+
+			for i := 0; i < len(responseObjectFull.Dwarves); i++ {
+				if responseObjectFull.Dwarves[i].Name == r.URL.Path[13:] {
+					// json.Unmarshal(responseData, &responseObjectFull)
+					b, err := json.Marshal(responseObjectFull.Dwarves[i])
+			    if err != nil {
+			        fmt.Println(err)
+			        return
+			    }
+
+					fmt.Fprintf(w, "%s" , b)
+				}
+			}
+
+
+			
     })
 
     log.Fatal(http.ListenAndServe(":8080", nil))
