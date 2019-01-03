@@ -51,9 +51,14 @@ func main() {
 		fmt.Println(responseObject.Dwarves[i].Name)
 	}
 
+		b, err := json.Marshal(responseObject)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
 
     http.HandleFunc("/api/dwarves", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "%s", responseObject)
+        fmt.Fprintf(w, "%s", b)
     })
 
     log.Fatal(http.ListenAndServe(":8080", nil))
