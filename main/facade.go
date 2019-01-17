@@ -34,6 +34,7 @@ type DwarveFull struct {
 }
 
 func main() {
+	
 	// GET request to the source URL, store in variable response
 	response, err := http.Get("https://thedwarves.pusherplatform.io/api/dwarves")
 

@@ -1,0 +1,29 @@
+version: "3.3"
+services:
+  
+  portainer:
+    image: portainer/portainer
+    ports:
+      - 9000:9000
+    # volumes:
+      # - "/var/run/docker.sock:/var/run/docker.sock"
+      # - "portainerdata:/data"
+    networks:
+      - backend  
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  ms1:
+    image: ejaycoleman/pusher-dwarf-facade
+    ports: 
+      - "8080:8080"
+    networks:
+      - backend
+    depends_on: 
+      - mongodb
+    deploy:
+      replicas: 2
+
+networks:
+  backend:
