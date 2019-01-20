@@ -6,11 +6,11 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "web1" do |web1|
-    web1.vm.box = "ubuntu/trusty64"
+    web1.vm.box = "williamyeh/ubuntu-trusty64-docker"
     web1.vm.network "private_network", ip: "10.0.0.11"
     web1.vm.provision :shell do |shell|
       shell.args = "1"
-      shell.path = "https://gist.githubusercontent.com/abraunton/1bfbf0aba866baa3b1fa/raw/ef4f6423de7fe5884051f63d5c6e1d55d3ee2974/provision-web.sh"
+      shell.path = "https://gist.githubusercontent.com/ejaycoleman/112e1d10c896213d110216bc112ab88a/raw/c33f900d3d3aae01c64b71f293503bec14f6bea7/provision-web.sh"
     end
   end
 
